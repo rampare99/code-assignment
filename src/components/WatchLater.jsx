@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import watchLaterSlice from '../data/watchLaterSlice'
 import Movie from './Movie'
 import '../styles/starred.scss'
+import '../styles/movies.scss'
 
 const WatchLater = ({viewTrailer}) => {
 
@@ -15,7 +16,7 @@ const WatchLater = ({viewTrailer}) => {
     <div className="starred" data-testid="watch-later-div">
       {watchLater.watchLaterMovies.length > 0 && (<div data-testid="watch-later-movies" className="starred-movies">
         <h6 className="header">Watch Later List</h6>
-        <div className="row">
+        <div className="cards-container">
         {watchLater.watchLaterMovies.map((movie) => (
           <Movie 
             movie={movie} 
