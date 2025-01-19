@@ -1,0 +1,19 @@
+p,
+h5 {
+	color: black;
+}
+
+.modal-background {
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.player-wrapper {
+	position: relative;
+	padding-top: 56.25%; /* mantain 16:9 aspect ratio */
+}
+
+.video-player {
+	position: absolute;
+	top: 0;
+	left: 0;
+}

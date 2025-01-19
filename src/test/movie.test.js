@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { renderWithProviders } from './utils'
 import App from '../App'
@@ -32,4 +32,34 @@ it('movies starred and saved to watch later', async () => {
     })
 
     await userEvent.click(screen.getAllByTestId('remove-watch-later')[0])
+})
+
+it('triggers fetchMovies on scroll to bottom', async () => {
+  const fetchMoviesSpy = jest.spyOn(require('../data/moviesSlice'), 'fetchMovies');
+
+  renderWithProviders(<App />);
+
+  fireEvent.scroll(window, { target: { scrollY: document.body.scrollHeight } });
+
+  await waitFor(() => screen.getByTestId('scroll-loading-spinner'), { timeout: 500 });
+
+  expect(fetchMoviesSpy).toHaveBeenCalled();
+
+  fetchMoviesSpy.mockRestore();
+});
+
+it('returns home when clicking the header icon', async () => {
+  const fetchMoviesSpy = jest.spyOn(require('../data/moviesSlice'), 'fetchMovies');
+
+  renderWithProviders(<App />);
+
+  await userEvent.click(screen.getByTestId('nav-starred')); // Asegúrate de tener un enlace con este testId
+  expect(window.location.pathname).toBe('/starred');
+
+  await userEvent.click(screen.getByTestId('home'));
+
+  expect(fetchMoviesSpy).toHaveBeenCalled();
+  expect(window.location.pathname).toBe('/');
+
+  fetchMoviesSpy.mockRestore()
 })

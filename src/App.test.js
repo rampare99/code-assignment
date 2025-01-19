@@ -22,6 +22,63 @@ it('search for movies', async () => {
   })
 })
 
+it('closes the modal when the close button is clicked', async () => {
+  const preloadedState = {
+    modal: {
+      isOpen: true,
+      videoKey: 'testVideoKey',
+      movieTitle: 'Test Movie',
+    },
+  };
+
+  renderWithProviders(<App />, { preloadedState });
+
+  expect(screen.getByTestId('trailer-modal')).toBeInTheDocument();
+
+  const closeButton = screen.getByTestId('close-trailer-modal-button');
+  await userEvent.click(closeButton);
+
+  await waitFor(() => {
+    expect(screen.queryByTestId('trailer-modal')).not.toBeInTheDocument();
+  });
+});
+
+it('closes the modal when clicking outside the modal content', async () => {
+  const preloadedState = {
+    modal: {
+      isOpen: true,
+      videoKey: 'testVideoKey',
+      movieTitle: 'Test Movie',
+    },
+  };
+
+  renderWithProviders(<App />, { preloadedState });
+
+  expect(screen.getByTestId('trailer-modal')).toBeInTheDocument();
+
+  const modalBackdrop = screen.getByTestId('trailer-modal');
+  await userEvent.click(modalBackdrop);
+  await waitFor(() => {
+    expect(screen.queryByTestId('trailer-modal')).not.toBeInTheDocument();
+  });
+});
+
+it('displays message when videoKey is not provided', async () => {
+  const preloadedState = {
+    modal: {
+      isOpen: true,
+      videoKey: null,
+      movieTitle: 'Test Movie',
+    },
+  };
+
+  renderWithProviders(<App />, { preloadedState });
+
+  expect(screen.getByTestId('trailer-modal')).toBeInTheDocument();
+
+  expect(screen.getByText('No trailer available.')).toBeInTheDocument();
+});
+
 it('renders watch later component', async() => {
   renderWithProviders(<App />)
   const user = userEvent.setup()

@@ -14,20 +14,20 @@ describe('starredSlice test', () => {
 
       it('should add movie to starred', () => {
         const initialState = { ...state, starredMovies: [] }
-        const action = starredSlice.actions.starMovie(moviesMock[0])
+        const action = starredSlice.actions.starMovie(moviesMock.results[0])
         const result = starredSlice.reducer(initialState, action)
-        expect(result.starredMovies[0]).toBe(moviesMock[0])
+        expect(result.starredMovies[0]).toBe(moviesMock.results[0])
       })
 
       it('should remove movie from starred', () => {
-        const initialState = { ...state, starredMovies: moviesMock }
-        const action = starredSlice.actions.unstarMovie(moviesMock[0])
+        const initialState = { ...state, starredMovies: moviesMock.results }
+        const action = starredSlice.actions.unstarMovie(moviesMock.results[0])
         const result = starredSlice.reducer(initialState, action)
-        expect(result.starredMovies[0]).toBe(moviesMock[1])
+        expect(result.starredMovies[0]).toBe(moviesMock.results[1])
       })
 
       it('should remove all movies', () => {
-        const initialState = { ...state, starredMovies: moviesMock }
+        const initialState = { ...state, starredMovies: moviesMock.results }
         const action = starredSlice.actions.clearAllStarred(state)
         const result = starredSlice.reducer(initialState, action)
         expect(Object.keys(result.starredMovies).length).toEqual(0)
